@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+svg{
+    width: 600px;
+    height: 600px;
+    background-color: rgb(254, 254, 254);
+    border: 1px solid red;
+    margin: 30px 30px 30px 30px;
+}
+
+</style>
+</head>
+<body>
+<svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" id="box1">
+
+</svg>
+<div id="notes"></div>
+<script>
+    var svg = document.getElementById('box1');
+    
+    svg.createRect = function(x, y, width, height, fill) {
+        let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", width);
+        rect.setAttribute("height", height);
+        rect.setAttribute("fill", fill);
+        rect.isclicked=false;
+        rect.addEventListener('mousedown', event=>{
+            this.isclicked= true;
+            console.log(event)
+        });
+
+        rect.addEventListener('mouseup', event=>{
+            this.isclicked= false;
+        });
+        
+        rect.addEventListener('mousemove', event=> {
+        if (this.isclicked) {
+            let svgleft=svg.getBoundingClientRect().left;
+             let svgtop=svg.getBoundingClientRect().top;
+              var x = (event.clientX-svgleft)*150/600;
+             var y = (event.clientY-svgtop)*150/600
+            // console.log(x,y)
+            rect.setAttribute("x", x*1-10);
+            rect.setAttribute("y", y*1-5);
+        }
+    }
+        );
+
+
+
+
+        this.appendChild(rect);
+  
+    };        
+   
+
+    svg.createRect(10, 10, 20, 20, "red");
+    svg.createRect(10, 10, 20, 20, "blue");
+
+
+
+    svg.addEventListener("mousemove", function(event) {
+        
+        let svgleft=svg.getBoundingClientRect().left;
+        let svgtop=svg.getBoundingClientRect().top;
+        var x = event.clientX-svgleft;
+        var y = event.clientY-svgtop;
+
+        document.getElementById("notes").innerHTML = "X=" + x + " Y=" + y + "";
+    });
+
+
+
+</script>
+    
+</body>
+</html>
+    
+
+
+</script>
+
+
+
+    
+</body>
+</html>
