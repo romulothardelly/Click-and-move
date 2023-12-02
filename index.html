@@ -24,13 +24,15 @@ svg{
 <script>
     var svg = document.getElementById('box1');
     
-    svg.createRect = function(x, y, width, height, fill) {
+    svg.createRect = function(x, y, width, height, fill,id) {
         let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
         rect.setAttribute("x", x);
         rect.setAttribute("y", y);
         rect.setAttribute("width", width);
         rect.setAttribute("height", height);
         rect.setAttribute("fill", fill);
+        rect.setAttribute("id", id);
+        rect.setAttribute("lines","")
         rect.isclicked=false;
         rect.addEventListener('mousedown', event=>{
             this.isclicked= true;
@@ -50,6 +52,35 @@ svg{
             // console.log(x,y)
             rect.setAttribute("x", x*1-10);
             rect.setAttribute("y", y*1-5);
+            let lineid=rect.getAttribute("lines");
+            if(lineid!=""){
+                let line=document.getElementById(lineid);
+                let r1=document.getElementById(line.getAttribute("id1"));
+                let r2=document.getElementById(line.getAttribute("id2"));
+                let r1width=r1.getAttribute("width");
+                let r1height=r1.getAttribute("height");
+                let r2width=r2.getAttribute("width");
+                let r2height=r2.getAttribute("height");
+                let r1x=r1.getAttribute("x");
+                let r1y=r1.getAttribute("y");
+                let r2x=r2.getAttribute("x");
+                let r2y=r2.getAttribute("y");
+                let r1cx=r1x*1+r1width*1/2;
+                let r1cy=r1y*1+r1height*1/2;
+                let r2cx=r2x*1+r2width*1/2;
+                let r2cy=r2y*1+r2height*1/2;
+
+                line.setAttribute("x1",r1cx);
+                line.setAttribute("y1",r1cy);
+                line.setAttribute("x2",r2cx);
+                line.setAttribute("y2",r2cy);
+                svg.appendChild(r1);
+                svg.appendChild(r2);
+
+
+                
+            }
+           
         }
     }
         );
@@ -59,15 +90,49 @@ svg{
 
         this.appendChild(rect);
   
-    };        
+    };
+    
+
+
+    svg.createline=function(id1,id2,stroke,id){
+        let line=document.createElementNS("http://www.w3.org/2000/svg", 'line');
+        line.setAttribute("id", id);
+        line.setAttribute("id1", id1);
+        line.setAttribute("id2", id2);
+        let r1width=document.getElementById(id1).getAttribute("width");
+        let r1height=document.getElementById(id1).getAttribute("height");
+        let r2width=document.getElementById(id2).getAttribute("width");
+        let r2height=document.getElementById(id2).getAttribute("height");
+        let r1x=document.getElementById(id1).getAttribute("x");
+        let r1y=document.getElementById(id1).getAttribute("y");
+        let r2x=document.getElementById(id2).getAttribute("x");
+        let r2y=document.getElementById(id2).getAttribute("y");
+        let r1cx=r1x*1+r1width*1/2;
+        let r1cy=r1y*1+r1height*1/2;
+        let r2cx=r2x*1+r2width*1/2;
+        let r2cy=r2y*1+r2height*1/2;
+        line.setAttribute("x1", r1cx);
+        line.setAttribute("y1", r1cy);
+        document.getElementById(id1).setAttribute("lines",id);
+        line.setAttribute("x2", r2cx)
+        line.setAttribute("y2", r2cy);
+        document.getElementById(id2).setAttribute("lines",id);  
+        line.setAttribute("stroke", stroke);
+        line.setAttribute("stroke-width", 2);
+        this.appendChild(line);
+
+    }
    
 
-    svg.createRect(10, 10, 20, 20, "red");
-    svg.createRect(10, 10, 20, 20, "blue");
+    svg.createRect(10, 10, 20, 20, "red","id1");
+    svg.createRect(10, 50, 20, 20, "blue","id2");
+    svg.createline("id1","id2","black",("id3"));
+    svg.appendChild(document.getElementById("id1"));
+    svg.appendChild(document.getElementById("id2"));
 
 
 
-    svg.addEventListener("mousemove", function(event) {
+   /* svg.addEventListener("mousemove", function(event) {
         
         let svgleft=svg.getBoundingClientRect().left;
         let svgtop=svg.getBoundingClientRect().top;
@@ -75,7 +140,7 @@ svg{
         var y = event.clientY-svgtop;
 
         document.getElementById("notes").innerHTML = "X=" + x + " Y=" + y + "";
-    });
+    });*/
 
 
 
